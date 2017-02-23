@@ -120,13 +120,14 @@ plugin.addPostTool = function(postData, callback) {
 	topics.getTopicDataByPid(postData.pid, function(err, data) {
 		data.isSolved = parseInt(data.isSolved, 10) === 1;
 		data.isQuestion = parseInt(data.isQuestion, 10) === 1;
-
-		if (data.uid && !data.isSolved && data.isQuestion && parseInt(data.mainPid, 10) !== parseInt(postData.pid, 10)) {		
-			postData.tools.push({
-				"action": "qanda/post-solved",
-				"html": "Mark this post as the correct answer",
-				"icon": "fa-check-circle"
-			});
+		if (postData.uid == data.uid) {
+			if (data.uid && !data.isSolved && data.isQuestion && parseInt(data.mainPid, 10) !== parseInt(postData.pid, 10)) {
+				postData.tools.push({
+					"action": "qanda/post-solved",
+					"html": "Mark this post as the correct answer",
+					"icon": "fa-check-circle"
+				});
+			}
 		}
 
 		callback(false, postData);
